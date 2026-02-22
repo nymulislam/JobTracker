@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobTracker</title>
+
+    <!-- DaisyUI CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+    <main>
+        <div class="container mx-auto space-y-6 p-4">
+            <h1 class="text-3xl font-bold">Job Application Tracker</h1>
+
+            <!-- Track count -->
+            <div class="flex justify-center gap-3">
+                <div class="flex-1 shadow-sm p-4 rounded-md">
+                    <h4>Total</h4>
+                    <p class="font-semibold text-xl">0</p>
+                </div>
+                <div class="flex-1 shadow-sm p-4 rounded-md">
+                    <h4>Interview</h4>
+                    <p class="font-semibold text-xl">0</p>
+                </div>
+                <div class="flex-1 shadow-sm p-4 rounded-md">
+                    <h4>Rejected</h4>
+                    <p class="font-semibold text-xl">0</p>
+                </div>
+            </div>
+
+            <hr class="opacity-20">
+
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold">Available Jobs</h2>
+                <p>
+                    <span>
+                        0
+                    </span>
+                    jobs
+                </p>
+            </div>
+
+            <div>
+                <button class="btn">All</button>
+                <button class="btn btn-success btn-soft">Interview</button>
+                <button class="btn btn-error btn-soft">Rejected</button>
+            </div>
+            <div>
+                <div class="grid justify-items-center justify-center shadow-sm p-10 rounded-md">
+                    <img src="Assects/jobs.png">
+                    <h3 class="text-2xl font-semibold mt-5">No jobs available</h3>
+                    <p class="">Start applying for jobs to see them here.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>
