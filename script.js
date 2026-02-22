@@ -22,6 +22,17 @@ const displayJobs = (jobs) => {
         const interviewBtn = e.target.closest('.interview-btn')
         const rejectBtn = e.target.closest('.reject-btn')
 
+        const appliedStatus = document.getElementById("applied-status")
+
+        if(interviewBtn){
+            appliedStatus.innerText = `INTERVIEW`
+            appliedStatus.classList.add('text-green-500', 'bg-green-100', 'border-l-3', 'font-bold')
+            appliedStatus.classList.remove('text-red-500', 'bg-red-100')
+        } else if(rejectBtn){
+            appliedStatus.innerText = `REJECTED`
+            appliedStatus.classList.add('text-red-500', 'bg-red-100', 'border-l-3', 'font-bold')
+        }
+
         if (!tabBtn) return;
 
         document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("btn-active"))
@@ -75,7 +86,7 @@ const displayJobs = (jobs) => {
                         <li>${job.type}</li>
                         <li>${job.salary}</li>
                     </ol>
-                    <h3 class="px-4 py-2 mt-3 shadow-sm w-fit rounded-md">NOT APPLIED</h3>
+                    <h3 id="applied-status" class="px-4 py-2 mt-3 shadow-sm w-fit rounded-md">NOT APPLIED</h3>
                     <p>${job.description}</p>
                     <div>
                         <button class="btn btn-success btn-soft interview-btn">
