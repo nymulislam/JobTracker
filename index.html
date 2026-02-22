@@ -9,6 +9,11 @@
     <!-- DaisyUI CDN -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -20,15 +25,15 @@
             <div class="flex justify-center gap-3">
                 <div class="flex-1 shadow-sm p-4 rounded-md">
                     <h4>Total</h4>
-                    <p class="font-semibold text-xl">0</p>
+                    <p id="total-jobs" class="font-semibold text-xl">0</p>
                 </div>
                 <div class="flex-1 shadow-sm p-4 rounded-md">
                     <h4>Interview</h4>
-                    <p class="font-semibold text-xl">0</p>
+                    <p class="font-semibold text-xl text-green-500">0</p>
                 </div>
                 <div class="flex-1 shadow-sm p-4 rounded-md">
                     <h4>Rejected</h4>
-                    <p class="font-semibold text-xl">0</p>
+                    <p class="font-semibold text-xl text-red-500">0</p>
                 </div>
             </div>
 
@@ -37,7 +42,7 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-semibold">Available Jobs</h2>
                 <p>
-                    <span>
+                    <span id="available-jobs">
                         0
                     </span>
                     jobs
@@ -45,11 +50,17 @@
             </div>
 
             <div>
-                <button class="btn">All</button>
-                <button class="btn btn-success btn-soft">Interview</button>
-                <button class="btn btn-error btn-soft">Rejected</button>
+                <button class="btn btn-neutral btn-outline btn-active tab-btn">All</button>
+                <button class=" btn btn-success btn-soft tab-btn">Interview</button>
+                <button class="btn btn-error btn-soft tab-btn">Rejected</button>
             </div>
-            <div>
+
+            <!-- Jobs showing -->
+            <div id="jobs-container" class="space-y-5">
+            </div>
+
+            <!-- Display no jobs card -->
+            <div id="no-jobs" class="hidden">
                 <div class="grid justify-items-center justify-center shadow-sm p-10 rounded-md">
                     <img src="Assects/jobs.png">
                     <h3 class="text-2xl font-semibold mt-5">No jobs available</h3>
