@@ -1,61 +1,73 @@
+let allJobs = [];
+let interviewJobs = [];
+let rejectedJobs = [];
+
+
 const loadJobs = () => {
     fetch('data.json')
         .then(res => res.json())
-        .then(data => displayJobs(data))
-}
+        .then(data => {
+            allJobs = data;
+            displayJobs(data)
+        })
 
-const interviewJobs = [];
-const rejectedJobs = [];
+}
 
 const displayJobs = (jobs) => {
     const jobsContainer = document.getElementById("jobs-container")
 
     // Display No-Jobs card conditionally
     const noJobsCard = document.getElementById("no-jobs");
-
     if (jobs.length === 0) {
         noJobsCard.classList.remove('hidden')
     }
 
     document.addEventListener('click', function (e) {
         const tabBtn = e.target.closest(".tab-btn")
-        const interviewBtn = e.target.closest('.interview-btn')
-        const rejectBtn = e.target.closest('.reject-btn')
+        const interview = e.target.closest(".interview-btn")
+        const reject = e.target.closest(".reject-btn")
 
-        const appliedStatus = document.getElementById("applied-status")
-
-        if(interviewBtn){
-            appliedStatus.innerText = `INTERVIEW`
-            appliedStatus.classList.add('text-green-500', 'bg-green-100', 'border-l-3', 'font-bold')
-            appliedStatus.classList.remove('text-red-500', 'bg-red-100')
-        } else if(rejectBtn){
-            appliedStatus.innerText = `REJECTED`
-            appliedStatus.classList.add('text-red-500', 'bg-red-100', 'border-l-3', 'font-bold')
+        // Change card status
+        if (interview) {
+            const jobCard = interview.closest('.job-card')
+            const changeStatus = jobCard.querySelector('.change-status');
+            changeStatus.innerText = `INTERVIEW`
+            changeStatus.classList.add('text-green-500', 'bg-green-100', 'border-l-3', 'font-bold')
+            changeStatus.classList.remove('text-red-500', 'bg-red-100')
+        }
+        if (reject) {
+            const jobCard = reject.closest('.job-card');
+            const changeStatus = jobCard.querySelector('.change-status')
+            changeStatus.innerText = `REJECTED`
+            changeStatus.classList.add('text-red-500', 'bg-red-100', 'border-l-3', 'font-bold')
         }
 
+        // Cards filtering by Interview || Rejected
+        if(interview || reject){
+            const card = e.target.closest('.job-card')
+            const id = Number(card.dataset.id);console.log(id)
+        }
+
+        // Tab btn change conditionally
         if (!tabBtn) return;
-
         document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("btn-active"))
-
         tabBtn.classList.add("btn-active");
-
         if (tabBtn.innerText === 'All') {
             if (jobs.length === 0) {
                 noJobsCard.classList.remove('hidden')
+            } else {
+                noJobsCard.classList.add('hidden')
+                loadJobs()
             }
-            loadJobs()
-        };
-
+        }
         if (tabBtn.innerText === 'Interview') {
             jobsContainer.innerHTML = " ";
             if (interviewJobs.length === 0) {
                 noJobsCard.classList.remove('hidden')
             }
         }
-
         if (tabBtn.innerText === 'Rejected') {
             jobsContainer.innerHTML = " ";
-
             if (rejectedJobs.length === 0) {
                 noJobsCard.classList.remove('hidden')
             }
@@ -65,13 +77,14 @@ const displayJobs = (jobs) => {
     // Display total jobs count
     document.getElementById("total-jobs").innerText = jobs.length;
     document.getElementById("available-jobs").innerText = jobs.length;
+    document.getElementById("interview-count").innerText = interviewJobs.length;
+    document.getElementById("reject-count").innerText = rejectedJobs.length;
 
     jobsContainer.innerHTML = "";
     for (const job of jobs) {
-        // console.log(job)
         const jobsCard = document.createElement("div")
         jobsCard.innerHTML = `
-        <div class="space-y-3 shadow-sm p-8 rounded-md">
+        <div data-id=${job.id} class="job-card space-y-3 shadow-sm p-8 rounded-md">
                     <div class="flex justify-between">
                         <div>
                             <h2 class="text-2xl font-semibold">${job.companyName}</h2>
@@ -86,14 +99,14 @@ const displayJobs = (jobs) => {
                         <li>${job.type}</li>
                         <li>${job.salary}</li>
                     </ol>
-                    <h3 id="applied-status" class="px-4 py-2 mt-3 shadow-sm w-fit rounded-md">NOT APPLIED</h3>
+                    <h3 class="px-4 py-2 mt-3 shadow-sm w-fit rounded-md change-status">NOT APPLIED</h3>
                     <p>${job.description}</p>
-                    <div>
-                        <button class="btn btn-success btn-soft interview-btn">
-                            interview
+                    <div class="space-x-4">
+                        <button class="btn btn-success btn-soft interview-btn shadow-sm">
+                            Interview
                         </button>
-                        <button class="btn btn-error btn-soft reject-btn">
-                            reject
+                        <button class="btn btn-error btn-soft reject-btn shadow-sm">
+                            Reject
                         </button>
                     </div>
                 </div>
