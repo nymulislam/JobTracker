@@ -1,7 +1,4 @@
-let allJobs = [];
-let interviewJobs = [];
-let rejectedJobs = [];
-
+let jobStatus = [];
 
 const loadJobs = () => {
     fetch('data.json')
@@ -10,7 +7,6 @@ const loadJobs = () => {
             allJobs = data;
             displayJobs(data)
         })
-
 }
 
 const displayJobs = (jobs) => {
@@ -28,24 +24,45 @@ const displayJobs = (jobs) => {
         const reject = e.target.closest(".reject-btn")
 
         // Change card status
-        if (interview) {
-            const jobCard = interview.closest('.job-card')
-            const changeStatus = jobCard.querySelector('.change-status');
-            changeStatus.innerText = `INTERVIEW`
-            changeStatus.classList.add('text-green-500', 'bg-green-100', 'border-l-3', 'font-bold')
-            changeStatus.classList.remove('text-red-500', 'bg-red-100')
-        }
-        if (reject) {
-            const jobCard = reject.closest('.job-card');
-            const changeStatus = jobCard.querySelector('.change-status')
-            changeStatus.innerText = `REJECTED`
-            changeStatus.classList.add('text-red-500', 'bg-red-100', 'border-l-3', 'font-bold')
-        }
+        if (interview || reject) {
+            const jobCard = e.target.closest('.job-card')
+            const jobId = Number(jobCard.dataset.id)
+            const job = jobs.find(j => j.id === jobId)
 
-        // Cards filtering by Interview || Rejected
-        if(interview || reject){
-            const card = e.target.closest('.job-card')
-            const id = Number(card.dataset.id);console.log(id)
+            let existingJob = jobStatus.find(j => j.id === jobId)
+
+            if (!existingJob) {
+                jobStatus.push(job)
+                existingJob = job
+            }
+
+            // Update Status
+            if (interview) {
+                existingJob.status = 'Interview'
+            }
+            if (reject) {
+                existingJob.status = 'Reject'
+            }
+
+            const interviewed = jobStatus.filter(j => j.status === 'Interview')
+            const rejected = jobStatus.filter(j => j.status === 'Reject')
+
+            document.getElementById("interview-count").innerText = interviewed.length;
+            document.getElementById("reject-count").innerText = rejected.length;
+
+            // Change status on behavior
+            const changeStatus = jobCard.querySelector('.change-status');
+
+            if (existingJob.status === 'Interview') {
+                changeStatus.innerText = `INTERVIEW`
+                changeStatus.classList.add('text-green-500', 'bg-green-100', 'border-l-3', 'font-bold')
+                changeStatus.classList.remove('text-red-500', 'bg-red-100')
+            }
+            if (existingJob.status === 'Reject') {
+                changeStatus.innerText = `REJECTED`
+                changeStatus.classList.add('text-red-500', 'bg-red-100', 'border-l-3', 'font-bold')
+                changeStatus.classList.remove('text-green-500', 'bg-green-100')
+            }
         }
 
         // Tab btn change conditionally
@@ -62,7 +79,7 @@ const displayJobs = (jobs) => {
         }
         if (tabBtn.innerText === 'Interview') {
             jobsContainer.innerHTML = " ";
-            if (interviewJobs.length === 0) {
+            if (interviewed.length === 0) {
                 noJobsCard.classList.remove('hidden')
             }
         }
@@ -77,8 +94,7 @@ const displayJobs = (jobs) => {
     // Display total jobs count
     document.getElementById("total-jobs").innerText = jobs.length;
     document.getElementById("available-jobs").innerText = jobs.length;
-    document.getElementById("interview-count").innerText = interviewJobs.length;
-    document.getElementById("reject-count").innerText = rejectedJobs.length;
+
 
     jobsContainer.innerHTML = "";
     for (const job of jobs) {
