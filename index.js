@@ -14,8 +14,8 @@ document.addEventListener('click', function (e) {
     const interview = e.target.closest(".interview-btn")
     const reject = e.target.closest(".reject-btn")
     const tabBtn = e.target.closest(".tab-btn")
-    const deleteBtn = e.target.closest('#delete-btn');
-    if (!deleteBtn) return;
+    const deleteBtn = e.target.closest('.delete-btn');
+    
     // card delete 
     if (deleteBtn) {
         const jobCard = deleteBtn.closest('.job-card')
@@ -58,10 +58,7 @@ document.addEventListener('click', function (e) {
 
 })
 
-// card delete
-function deleteCard() {
 
-}
 
 // Load data click on tab
 function displayCurrentTab() {
@@ -128,7 +125,7 @@ const displayJobs = (jobs) => {
                             <h2 class="text-2xl font-semibold">${job.companyName}</h2>
                             <h4 class="text-lg opacity-65">${job.position}</h4>
                         </div>
-                        <button id="delete-btn" class="btn btn-circle btn-error btn-outline hover:text-white">
+                        <button class="btn delete-btn btn-circle btn-error btn-outline hover:text-white">
                             <i class="fa-solid fa-trash text-lg"></i>
                         </button>
                     </div>
