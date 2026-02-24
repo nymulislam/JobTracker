@@ -14,6 +14,18 @@ document.addEventListener('click', function (e) {
     const interview = e.target.closest(".interview-btn")
     const reject = e.target.closest(".reject-btn")
     const tabBtn = e.target.closest(".tab-btn")
+    const deleteBtn = e.target.closest('#delete-btn');
+    if (!deleteBtn) return;
+    // card delete 
+    if (deleteBtn) {
+        const jobCard = deleteBtn.closest('.job-card')
+        const jobId = Number(jobCard.dataset.id)
+
+        allJobs = allJobs.filter(j => j.id !== jobId)
+        jobStatus = jobStatus.filter(j => j.id !== jobId)
+        UpdateCounts()
+        displayCurrentTab()
+    }
 
     // Change card status
     if (interview || reject) {
@@ -46,20 +58,28 @@ document.addEventListener('click', function (e) {
 
 })
 
+// card delete
+function deleteCard() {
+
+}
+
 // Load data click on tab
 function displayCurrentTab() {
     const activeTab = document.querySelector(".tab-btn.btn-active").innerText
 
     if (activeTab === "All") {
         displayJobs(allJobs)
+        document.getElementById('jobs-of-count').innerText = allJobs.length
     }
     if (activeTab === "Interview") {
         const interviewed = jobStatus.filter(j => j.status === 'Interview')
         displayJobs(interviewed)
+        document.getElementById('jobs-of-count').innerText = interviewed.length
     }
     if (activeTab === "Rejected") {
         const rejected = jobStatus.filter(j => j.status === 'Reject')
         displayJobs(rejected)
+        document.getElementById('jobs-of-count').innerText = rejected.length
     }
 }
 
@@ -70,13 +90,13 @@ function UpdateCounts() {
 
     document.getElementById("interview-count").innerText = interviewed.length
     document.getElementById("reject-count").innerText = rejected.length
-
 }
 // Display all jobs data
 const displayJobs = (jobs) => {
     const jobsContainer = document.getElementById("jobs-container")
     const noJobsCard = document.getElementById("no-jobs").classList;
     document.getElementById("total-jobs").innerText = allJobs.length
+    document.getElementById('available-jobs').innerText = allJobs.length
     jobsContainer.innerHTML = "";
 
     jobs.length !== 0 ?
@@ -108,7 +128,7 @@ const displayJobs = (jobs) => {
                             <h2 class="text-2xl font-semibold">${job.companyName}</h2>
                             <h4 class="text-lg opacity-65">${job.position}</h4>
                         </div>
-                        <button class="btn btn-circle btn-error btn-outline hover:text-white">
+                        <button id="delete-btn" class="btn btn-circle btn-error btn-outline hover:text-white">
                             <i class="fa-solid fa-trash text-lg"></i>
                         </button>
                     </div>
